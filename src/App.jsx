@@ -86,6 +86,7 @@ const defaultHistory = [
 ];
 
 const timeSlots = ["09:30", "10:40", "12:00", "14:30", "16:10"];
+const appTarget = import.meta.env.VITE_APP_TARGET === "clinic" ? "clinic" : "patient";
 
 function readStorage(key, fallback) {
   try {
@@ -128,11 +129,11 @@ function useStoredState(key, fallback) {
 
 function App() {
   const path = window.location.pathname.toLowerCase();
-  const isClinicPage = path.startsWith("/clinic");
+  const isClinicPage = appTarget === "clinic" || path.startsWith("/clinic");
 
   useEffect(() => {
     if (window.location.pathname === "/" || window.location.pathname === "") {
-      window.history.replaceState({}, "", "/patient");
+      window.history.replaceState({}, "", appTarget === "clinic" ? "/clinic" : "/patient");
     }
   }, []);
 
